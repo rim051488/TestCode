@@ -9,7 +9,7 @@ using namespace std;
 bool SysInit(void)
 {
 	// システム処理
-	SetWindowText("2016025_永冨　心"); // ゲームウィンドウのタイトル
+	SetWindowText(L"2016025_永冨　心"); // ゲームウィンドウのタイトル
 
 	SetGraphMode(SCENE_SIZE_X, SCENE_SIZE_Y, 32);
 	ChangeWindowMode(true);
