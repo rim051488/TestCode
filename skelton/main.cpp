@@ -18,8 +18,13 @@ Position2 GetMousePosition2()
 
 float DegreeToRadian(float deg)
 {
-	return deg * 
+	return deg * DX_PI / 180.0f;
 }
+
+bool Isreverse = false;
+int lasMouseInput = 0;
+int frameForAngle = 0;
+
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -33,9 +38,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		return false;
 	}
 
-	int pos_x = 100;
-	int pos_y = 100;
-	int size = 50;
+	Circle cA = { {100,100},50 };
+	Circle cB = { {400,300},50 };
+	char keystate[256];
+	int ground = LoadGraph(L"./Image/ground.png", false);
+	int bgAssetH = LoadGraph(L"./Image/Assets.png", false);
+
 
 	unsigned int frameNo = 0;
 
@@ -46,14 +54,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		if ((currentMouseInput & MOUSE_INPUT_LEFT) &&
 			!(lastMouseInput & MOUSE_INPUT_LEFT))
 		{
-			isReverse = !isReverse;
+			Isreverse = !Isreverse;
 		}
 		lastMouseInput = currentMouseInput;
 
-		constexpr size_t block_size = 32;
-		auto count = 720 / block_size;
+		int arrW, arrH;
+		GetGraphSize(arrowH,&arrW,&arrH);
+		constexpr size_t block_size = 16;
+		constexpr size_t Width = 1000;
+		auto count = Width / block_size;
 		constexpr int base_y = 240;
-		constexpr float sin_amp = 50.0f;
+		constexpr float sin_amp = block_size*2;
 		int x = 0;
 		int y = 240;
 		Position2 groundPos(x, y);
@@ -90,7 +101,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				middlePosL.x, middlePosL.y,//左下(左上から真下に落としている)
 				48, 0,//元画像の左上
 				16, 16,//元画像の切り抜きの幅、切り抜き高さ
-				groundH,
+				ground,
 				true
 			);
 			//四角形表示
@@ -113,19 +124,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		// 現在のマウス座標を取得
 		auto mpos = GetMousePosition2();
-		Vector2 dir = mpos-rcA.center;
+		Vector2 dir = mpos- cA.center;
 		//基準（0。）右ベクトルで、マウスの向きを角度で返す
 		float angle = atan2(dir.y, dir.x);
 		auto imgIdx = frameNo / frames_per_pict;
 		int flipX = 16;
-		if (isReverse)
+		if (Isreverse)
 		{
 			int w, h;
 			GetGraphSize(graphH[imgIdx], &w, &h);
 		}
-		DrawRotaGraph2(rcA.center.x, rcA.center.y,	//画像の表示位置
+		DrawRotaGraph2(cA.center.x, cA.center.y,	//画像の表示位置
 			16,35, //上の画像表示位置に、画像自体のこの座標があうように表示
-			4.0f, angle, graphH[frameNo/frames_per_pict],true,isReverse);
+			4.0f, angle, graphH[frameNo/frames_per_pict],true, Isreverse);
 
 	}
 
