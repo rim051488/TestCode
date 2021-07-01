@@ -43,7 +43,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	char keystate[256];
 	int ground = LoadGraph(L"./Image/ground.png", false);
 	int bgAssetH = LoadGraph(L"./Image/Assets.png", false);
-
+	int arrowH = LoadGraph(L"./Image/arrow.png", false);
 
 	unsigned int frameNo = 0;
 
@@ -58,19 +58,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		}
 		lastMouseInput = currentMouseInput;
 
-		int arrW, arrH;
-		GetGraphSize(arrowH,&arrW,&arrH);
+		int imgWidth, imgHeight;
+		GetGraphSize(arrowH,&imgWidth,&imgHeight);
 		constexpr size_t block_size = 16;
 		constexpr size_t Width = 1000;
 		auto count = Width / block_size;
+		float weight = (float)800 / (float)Width;
 		constexpr int base_y = 240;
 		constexpr float sin_amp = block_size*2;
 		int x = 0;
-		int y = 240;
+		int y = base_y + sin_amp * sin(DegreeToRadian((float)(frameForAngle)));
 		Position2 groundPos(x, y);
 		Position2 currentPos(x, y);
 		//Vector2 lastDelta90Vec = Vector2::Zero(); // 直前のベクトル
 		Vector2 lastDelta90Vectors[2] = { Vector2::Zero() ,Vector2::Zero() }; // 直前のベクトル
+		Position2 lastPos = { 0.0f,0.0f };
 		for (int i = 0; i < count; ++i)
 		{
 			int nextX = i * block_size;
@@ -101,9 +103,28 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				middlePosL.x, middlePosL.y,//左下(左上から真下に落としている)
 				48, 0,//元画像の左上
 				16, 16,//元画像の切り抜きの幅、切り抜き高さ
-				ground,
+				arrowH,
 				true
 			);
+			if (lastPos == Vector2(0.0f, 0.0f))
+			{
+				auto middlePosL = currentPos + middleVecL*2;
+				auto middlePosR = nextPos + middleVecR*2;
+
+				DrawRectModiGraph(lastPos.x, lastPos.y, // 左上
+					currentPos.x, currentPos.y,//右上
+					middlePosR.x, middlePosR.y,//右下(右上から真下に落としている)
+					middlePosL.x, middlePosL.y,//左下(左上から真下に落としている)
+					48, 0,//元画像の左上
+					16, 16,//元画像の切り抜きの幅、切り抜き高さ
+					arrowH,
+					true
+				);
+			}
+			else
+			{
+
+			}
 			//四角形表示
 			//DrawLineAA(x, y,//始点
 			//	nextX, nextY,//終点
@@ -126,17 +147,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		auto mpos = GetMousePosition2();
 		Vector2 dir = mpos- cA.center;
 		//基準（0。）右ベクトルで、マウスの向きを角度で返す
-		float angle = atan2(dir.y, dir.x);
-		auto imgIdx = frameNo / frames_per_pict;
-		int flipX = 16;
-		if (Isreverse)
-		{
-			int w, h;
-			GetGraphSize(graphH[imgIdx], &w, &h);
-		}
-		DrawRotaGraph2(cA.center.x, cA.center.y,	//画像の表示位置
-			16,35, //上の画像表示位置に、画像自体のこの座標があうように表示
-			4.0f, angle, graphH[frameNo/frames_per_pict],true, Isreverse);
+		//float angle = atan2(dir.y, dir.x);
+		//auto imgIdx = frameNo / frames_per_pict;
+		//int flipX = 16;
+		//if (Isreverse)
+		//{
+		//	int w, h;
+		//	GetGraphSize(graphH[imgIdx], &w, &h);
+		//}
+		//DrawRotaGraph2(cA.center.x, cA.center.y,	//画像の表示位置
+		//	16,35, //上の画像表示位置に、画像自体のこの座標があうように表示
+		//	4.0f, angle, graphH[frameNo/frames_per_pict],true, Isreverse);
 
 	}
 
