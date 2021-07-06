@@ -23,6 +23,13 @@ struct Vector2 {
 	///³‹K‰»ƒxƒNƒgƒ‹‚ğ•Ô‚µ‚Ü‚·
 	Vector2 Normalized();
 
+	//‚X‚O“x‰ñ“]
+	void Rootate90();
+	Vector2 Rotated90()const;
+	static const Vector2 Zero() {
+		return { 0.0f,0.0f };
+	}
+
 	void operator+=(const Vector2& v);
 	void operator-=(const Vector2& v);
 	void operator*=(float scale);

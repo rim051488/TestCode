@@ -1,7 +1,8 @@
-#include"Geometry.h"
 #include<DxLib.h>
 #include<cmath>
-
+#include <cassert>
+#include <algorithm>
+#include"Geometry.h"
 
 void
 Rect::Draw() {
@@ -66,6 +67,17 @@ Vector2
 Vector2::Normalized() {
 	float mag = Magnitude();
 	return Vector2(x / mag,	y /mag);
+}
+
+void Vector2::Rootate90()
+{
+	std::swap(x, y);
+	x = -x;
+}
+
+Vector2 Vector2::Rotated90() const
+{
+	return Vector2(-y, x);
 }
 
 
