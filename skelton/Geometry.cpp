@@ -2,11 +2,11 @@
 #include <cmath>
 #include <cassert>
 #include "Geometry.h"
-
-Vector2::Vector2()
-{
-	Vector2(0, 0);
-}
+//
+//Vector2::Vector2()
+//{
+//	Vector2(0, 0);
+//}
 
 Vector2::Vector2(float inx, float iny):x(inx),y(iny)
 {

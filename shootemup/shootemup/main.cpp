@@ -1,6 +1,9 @@
 #include<DxLib.h>
 #include<cmath>
+<<<<<<< HEAD
 #include<memory>
+=======
+>>>>>>> 32b9e1f62437099887850dabda3facbbbf6e8aa3
 #include"Geometry.h"
 
 ///当たり判定関数
@@ -13,7 +16,10 @@ bool IsHit(const Position2& posA, float radiusA, const Position2& posB,  float r
 	return false;
 }
 
+<<<<<<< HEAD
 using namespace std;
+=======
+>>>>>>> 32b9e1f62437099887850dabda3facbbbf6e8aa3
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ChangeWindowMode(true);
 	SetMainWindowText("弾幕だよ～");
@@ -51,13 +57,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//適当に256個くらい作っとく
 	Bullet bullets[256];
 
+<<<<<<< HEAD
 	Bullet homingShots[2] = {};//プレイヤーのホーミング弾
 
+=======
+>>>>>>> 32b9e1f62437099887850dabda3facbbbf6e8aa3
 	Position2 enemypos(320,25);//敵座標
 	Position2 playerpos(320, 400);//自機座標
 
 	unsigned int frame = 0;//フレーム管理用
 
+<<<<<<< HEAD
 	char keystate[256] = {};
 	char lastkeystate[256] = {};
 	bool isDebugMode = false;
@@ -66,6 +76,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int skyy2 = 0;
 	int bgidx = 0;
 	constexpr float homing_shot_speed = 10.0f;
+=======
+	char keystate[256];
+	bool isDebugMode = false;
+	int skyy = 0;
+	int skyy2 = 0;
+	int bgidx = 0;
+>>>>>>> 32b9e1f62437099887850dabda3facbbbf6e8aa3
 	while (ProcessMessage() == 0) {
 		ClearDrawScreen();
 
@@ -98,6 +115,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}else if (keystate[KEY_INPUT_DOWN]) {
 			playerpos.y = min(480,playerpos.y+4);
 		}
+<<<<<<< HEAD
 		if (keystate[KEY_INPUT_Z]&&!lastkeystate[KEY_INPUT_Z]) {
 			//ホーミング弾発射
 			DrawString(100, 100, "発射", 0x000000);
@@ -142,6 +160,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 
 		DrawCircleAA(enemypos.x, enemypos.y, 30.0f, 16, 0x00ff00, false, 3.0f);
+=======
+>>>>>>> 32b9e1f62437099887850dabda3facbbbf6e8aa3
 
 		int pidx = (frame/4 % 2)*5+3;
 		DrawRotaGraph(playerpos.x, playerpos.y, 2.0f, 0.0f, playerH[pidx], true);
@@ -203,7 +223,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 		++frame;
 		ScreenFlip();
+<<<<<<< HEAD
 		std::copy(begin(keystate), end(keystate), begin(lastkeystate));
+=======
+>>>>>>> 32b9e1f62437099887850dabda3facbbbf6e8aa3
 	}
 
 	DxLib_End();
