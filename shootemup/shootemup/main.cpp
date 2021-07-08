@@ -21,7 +21,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		return -1;
 	}
 	SetDrawScreen(DX_SCREEN_BACK);
-
 	//背景用
 	int bgH[4];
 	LoadDivGraph("img/bganim.png", 4, 4, 1, 256, 192, bgH);
@@ -138,7 +137,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				hshot.pos.y + 24 < 0 || hshot.pos.y - 24 > 480) {
 				hshot.isActive = false;
 			}
-
 		}
 
 		DrawCircleAA(enemypos.x, enemypos.y, 30.0f, 16, 0x00ff00, false, 3.0f);
@@ -149,6 +147,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//自機の本体(当たり判定)
 			DrawCircle(playerpos.x, playerpos.y, playerRadius, 0xffaaaa, false, 3);
 		}
+
+		//パフォーマンス計測
+		//ドローコール
+		auto dCallCnt = GetDrawCallCount();
+		auto fps = GetFPS();
+		//デバック表示
+		DrawFormatString(10, 50, 0x000000, "DrawCall=%d", dCallCnt);
+		DrawFormatString(10, 100, 0x000000, "fps=%f", fps);
 
 		//弾発射
 		if (frame % 12 == 0) {
