@@ -81,13 +81,13 @@ Vector2 Vector2::Rotated90() const
 }
 
 
-///内積を返す
+///内積を返す(cosにかかわる。0を中心に線対称)
 float
 Dot(const Vector2& va, const Vector2& vb) {
 	return va.x*vb.x + va.y*vb.y;
 }
 
-///外積を返す
+///外積を返す (sinにかかわる。0を中心に点対称)
 float
 Cross(const Vector2& va, const Vector2& vb) {
 	return va.x*vb.y - vb.x*va.y;

@@ -1,0 +1,79 @@
+7/15
+list vs vector
+Trailとは、飛行機雲の「尾」みたいなやつ
+本体に近いほど鮮明になり、本体から離れるほど薄くなる。
+本体の動きをなぞるように動く
+
+本来のTrailの意味は「軌跡」「足跡」
+
+今回のトレイル(Trail Renderer)は、ホーミングレーザーを想定しているので、ちっちゃくするかはともかく薄くする。
+
+「軌跡」「足跡」ということは、通った場所の履歴である。
+つまり、実装するときには、時間ごとの記録を取ればいい。
+最初vectorで固定で8(記録回数)で考えてましたが、
+作りが面倒になるので、listにした。
+
+どう作っているかというと、vectorといえばresizeか
+push_backで追加するかなと思いますが、今回は
+push_front及び、pop_backを使用したいと思います
+
+push_frontは、先頭に値を追加する。
+
+リストの弱いところ、ランダムアクセス
+
+コンテナを選ぶときは、各コンテナの弱点が何なのか把握しておく。
+弱点
+vector 頻繁な追加、削除
+list ランダムアクセス
+
+もしどうしていいかわからない・・となったら
+vectorと選ぼう！迷ったらvectorを選ぼう。
+目的とメリットが明確な時にほかのやつを選ぼう。
+
+内積
+A・B = |A||B|cosθ
+B・A = |A||B|cosθ
+A・B = B・A
+
+外積
+A×B = |A||B|sinθ
+B×A = |A||B|sin(-θ)=-|A||B|sinθ
+A×B =-B×A
+θ=θ>π/6? π/6: θ;
+参考演算子について・・・
+
+式　?値① : 値②;
+式がtrueなら、値①を採用し、
+falseなら、値②を採用する。
+constexpr float limit_angle=DX_PI_F/6.0f;
+
+theta = DX_PI_F/3.0f;
+theta = (theta>limit_angle) ? limit_angle : theta;
+
+theta = std::fminf(theta,limit_angle);
+
+A・B = |A||B|cosθ
+A・B = cosθ
+acos(A・B);
+
+A(ax,ay) B(bx,by)
+A・B = ax*bx + ay*by;
+ax=|A|cosα
+bx=|B|cosα
+
+F=|A|
+G=|B|
+A(F,α) B(G,β)
+
+ax = Fcosα
+ay = Fsinα
+bx = Gcosβ
+by = Gsinβ
+
+ax*bx + ay*by
+Fcosα*Gcosβ + Fsinα*Gsinβ
+FG(cosα*cosβ + sinα*sinβ)
+
+加法定理
+
+

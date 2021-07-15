@@ -50,7 +50,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//適当に256個くらい作っとく
 	Bullet bullets[256];
 
-	Bullet homingShots[2] = {};//プレイヤーのホーミング弾
+	Bullet homingShots[8] = {};//プレイヤーのホーミング弾
 
 	Position2 enemypos(320,25);//敵座標
 	Position2 playerpos(320, 400);//自機座標
@@ -115,16 +115,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		for (auto& hshot : homingShots) {
 			if (!hshot.isActive)continue;
 			hshot.pos += hshot.vel;
-			for (int i = 1; i < 5; ++i) {
-				auto tailPos = hshot.pos - hshot.vel * static_cast<float>(i);
-				auto thickness = static_cast<float>(6 - i);
-				DrawLineAA(hshot.pos.x, hshot.pos.y, tailPos.x, tailPos.y,
-					0xff0000, thickness*4.0f);
-			}
+			//for (int i = 1; i < 5; ++i) {
+			//	auto tailPos = hshot.pos - hshot.vel * static_cast<float>(i);
+			//	auto thickness = static_cast<float>(6 - i);
+			//	DrawLineAA(hshot.pos.x, hshot.pos.y, tailPos.x, tailPos.y,
+			//		0xff0000, thickness*4.0f);
+			//}
 
 			//hshot.vel = (hshot.vel +((enemypos - playerpos).Normalized()).Normalized() * homing_shot_speed);
 
-			hshot.vel = (hshot.vel + ((enemypos - playerpos).Normalized()).Normalized() * homing_shot_speed);
+			//hshot.vel = (hshot.vel + ((enemypos - playerpos).Normalized()).Normalized() * homing_shot_speed);
+
+			//
+			auto nvel = hshot.vel.Normalized();
+			auto nToEnemy = (enemypos - hshot.pos).Normalized();
+
 			DrawCircleAA(hshot.pos.x, hshot.pos.y,
 				8.0f, 16, 0xff0000);
 
