@@ -1,7 +1,7 @@
 #include<DxLib.h>
 #include<cmath>
 #include<memory>
-#include"Geometry.h"
+#include"HomingShot.h"
 
 ///当たり判定関数
 ///@param posA Aの座標
@@ -16,7 +16,7 @@ bool IsHit(const Position2& posA, float radiusA, const Position2& posB,  float r
 using namespace std;
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ChangeWindowMode(true);
-	SetMainWindowText("弾幕だよ～");
+	SetMainWindowText("2016025_永冨心");
 	if (DxLib_Init() != 0) {
 		return -1;
 	}
@@ -35,11 +35,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int enemyH[2];
 	LoadDivGraph("img/enemy.png", 2, 2, 1, 32, 32, enemyH);
 
-	struct Bullet {
-		Position2 pos;//座標
-		Vector2 vel;//速度
-		bool isActive = false;//生きてるか～？
-	};
 
 	//弾の半径
 	float bulletRadius = 5.0f;
@@ -50,7 +45,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//適当に256個くらい作っとく
 	Bullet bullets[256];
 
-	Bullet homingShots[8] = {};//プレイヤーのホーミング弾
+	HomingShot homingShots[16] = {};//プレイヤーのホーミング弾
 
 	Position2 enemypos(320,25);//敵座標
 	Position2 playerpos(320, 400);//自機座標
@@ -100,13 +95,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (keystate[KEY_INPUT_Z]&&!lastkeystate[KEY_INPUT_Z]) {
 			//ホーミング弾発射
 			DrawString(100, 100, "発射", 0x000000);
+			int count = 0;
 			for (auto& hs : homingShots) {
-				if (!homingShots[0].isActive)
+				if (!hs.isActive)
 				{
-					homingShots[0].isActive = true;
-					homingShots[0].pos = playerpos;
-					homingShots[0].vel = {isRightHoming? homing_shot_speed:homing_shot_speed,0.0f };
+					hs.isActive = true;
+					hs.pos = playerpos;
+					hs.vel = { count % 2 == 0 ? homing_shot_speed : -homing_shot_speed,4.0f };
+					hs.vel.Normalized();
+					hs.vel *= homing_shot_speed;
+					hs.trail.Clear();
 					isRightHoming = !isRightHoming;
+					if (++count > 2)
+					{
+						break;
+					}
 				}
 			}
 		}
@@ -114,21 +117,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//プレイヤーのホーミング弾描画
 		for (auto& hshot : homingShots) {
 			if (!hshot.isActive)continue;
+			if (frame % 2 == 0)
+			{
+				hshot.trail.Updata();
+			}
 			hshot.pos += hshot.vel;
+			hshot.trail.Draw();
 			//for (int i = 1; i < 5; ++i) {
 			//	auto tailPos = hshot.pos - hshot.vel * static_cast<float>(i);
-			//	auto thickness = static_cast<float>(6 - i);
+			//	auto thickness = static_cast<float>(6 - i);d
 			//	DrawLineAA(hshot.pos.x, hshot.pos.y, tailPos.x, tailPos.y,
 			//		0xff0000, thickness*4.0f);
 			//}
 
 			//hshot.vel = (hshot.vel +((enemypos - playerpos).Normalized()).Normalized() * homing_shot_speed);
 
-			//hshot.vel = (hshot.vel + ((enemypos - playerpos).Normalized()).Normalized() * homing_shot_speed);
+			//hshot.vel = (hshot.vel + ((enemypos - hshot.pos).Normalized()).Normalized() * homing_shot_speed);
 
-			//
-			auto nvel = hshot.vel.Normalized();
+			////敵へのベクトル、および今の速度ベクトルを正規化
+			auto nVelocity = hshot.vel.Normalized();
 			auto nToEnemy = (enemypos - hshot.pos).Normalized();
+			auto dot = Dot(nVelocity, nToEnemy);//cosθが出る
+			auto angle = acos(dot);//角度が出る(0を中心とした線対称
+			angle = std::fminf(angle, DX_PI_F / 24.0f);
+			float sign = Cross(nVelocity, nToEnemy) > 0.0f ? 1.0f : -1.0f;
+			angle = atan2(hshot.vel.y, hshot.vel.x) + sign * angle;
+			hshot.vel = Vector2(cos(angle), sin(angle)) * homing_shot_speed;
 
 			DrawCircleAA(hshot.pos.x, hshot.pos.y,
 				8.0f, 16, 0xff0000);

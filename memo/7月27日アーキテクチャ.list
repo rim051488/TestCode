@@ -1,0 +1,11 @@
+NULLはサンプルではよく出てくるけど、
+現代では使うのが望ましくない定数、関数
+
+NULL
+
+ZeroMemory
+memset
+memcpy
+
+autoでかけるところは、autoで書こう。
+理由は「変化に対応するため」
