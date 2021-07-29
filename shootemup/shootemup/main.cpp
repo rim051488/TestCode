@@ -132,17 +132,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			//hshot.vel = (hshot.vel +((enemypos - playerpos).Normalized()).Normalized() * homing_shot_speed);
 
-			//hshot.vel = (hshot.vel + ((enemypos - hshot.pos).Normalized()).Normalized() * homing_shot_speed);
+			hshot.vel = (hshot.vel + (enemypos - hshot.pos).Normalized()).Normalized() * homing_shot_speed;
 
 			////敵へのベクトル、および今の速度ベクトルを正規化
-			auto nVelocity = hshot.vel.Normalized();
-			auto nToEnemy = (enemypos - hshot.pos).Normalized();
-			auto dot = Dot(nVelocity, nToEnemy);//cosθが出る
-			auto angle = acos(dot);//角度が出る(0を中心とした線対称
-			angle = std::fminf(angle, DX_PI_F / 24.0f);
-			float sign = Cross(nVelocity, nToEnemy) > 0.0f ? 1.0f : -1.0f;
-			angle = atan2(hshot.vel.y, hshot.vel.x) + sign * angle;
-			hshot.vel = Vector2(cos(angle), sin(angle)) * homing_shot_speed;
+			//auto nVelocity = hshot.vel.Normalized();
+			//auto nToEnemy = (enemypos - hshot.pos).Normalized();
+			//auto dot = Dot(nVelocity, nToEnemy);//cosθが出る
+			//auto angle = acos(dot);//角度が出る(0を中心とした線対称
+			//angle = std::fminf(angle, DX_PI_F / 24.0f);
+			//float sign = Cross(nVelocity, nToEnemy) > 0.0f ? 1.0f : -1.0f;
+			//angle = atan2(hshot.vel.y, hshot.vel.x) + sign * angle;
+			//hshot.vel = Vector2(cos(angle), sin(angle)) * homing_shot_speed;
 
 			DrawCircleAA(hshot.pos.x, hshot.pos.y,
 				8.0f, 16, 0xff0000);
