@@ -106,7 +106,7 @@ operator%(const Vector2& va, const Vector2& vb) {
 }
 
 
-void 
+void
 Vector2::operator+=(const Vector2& v) {
 	x += v.x;
 	y += v.y;

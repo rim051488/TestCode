@@ -29,7 +29,6 @@ struct Vector2 {
 	static const Vector2 Zero() {
 		return { 0.0f,0.0f };
 	}
-
 	void operator+=(const Vector2& v);
 	void operator-=(const Vector2& v);
 	void operator*=(float scale);

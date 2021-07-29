@@ -35,6 +35,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int enemyH[2];
 	LoadDivGraph("img/enemy.png", 2, 2, 1, 32, 32, enemyH);
 
+	int arrowH = LoadGraph("img/arrow.png");
 
 	//弾の半径
 	float bulletRadius = 5.0f;
@@ -46,7 +47,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Bullet bullets[256];
 
 	HomingShot homingShots[16] = {};//プレイヤーのホーミング弾
-
+	for (auto& shot : homingShots)
+	{
+		shot.trail.SetHandle(arrowH);
+	}
 
 	Position2 enemypos(320,25);//敵座標
 	Position2 playerpos(320, 400);//自機座標
@@ -107,7 +111,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					hs.vel *= homing_shot_speed;
 					hs.trail.Clear();
 					isRightHoming = !isRightHoming;
-					if (++count > 2)
+					if (++count > 1)
 					{
 						break;
 					}
