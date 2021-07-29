@@ -1,6 +1,6 @@
 githubはパスワードではなくトークンでログインするようにする
 トークンは基本的に30日なので頻繁にトークンを作っておく
-structはでも継承ができる。デフォルトでpublic
-class はデフォルトprivate
+structはでも継承ができる。デフォルトでpublic、newしなくてよい
 
-arrow画像を256nisuru
+class はデフォルトprivate、newしないといけない
+
