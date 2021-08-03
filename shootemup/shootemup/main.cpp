@@ -108,7 +108,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					hs.pos = playerpos;
 					hs.vel = { count % 2 == 0 ? homing_shot_speed : -homing_shot_speed,4.0f };
 					hs.vel.Normalized();
-					hs.vel *= homing_shot_speed;
+					//hs.vel *= homing_shot_speed;
 					hs.trail.Clear();
 					isRightHoming = !isRightHoming;
 					if (++count > 1)
